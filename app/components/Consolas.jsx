@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useUser } from '../context/UserContext';
 
-export const Consolas = () => {
+const Consolas = () => {
     const [consolas, setConsolas] = useState([]);
     const [error, setError] = useState(null); // Estado para el error
-    const { userData } = useUser(); 
+    const { userData } = useUser() || {};
 
     useEffect(() => {
         const fetchConsolas = async () => {
@@ -15,24 +15,29 @@ export const Consolas = () => {
                 if (userData?.token) {
                     headers['Authorization'] = `Bearer ${userData.token}`;
                 }
-                const response = await fetch('http://localhost:3000/console', { headers });
+                const response = await fetch('https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/console', { headers });
                 if (!response.ok) {
                     throw new Error('Error al obtener las consolas');
                 }
                 const data = await response.json();
                 setConsolas(data); // Actualizar el estado con los datos obtenidos
+                setError(null); // Reiniciar el estado de error si la solicitud tiene éxito
             } catch (error) {
                 console.error('Error al obtener las consolas:', error);
+                setError(error.message); // Actualizar el estado con el mensaje de error
             }
         };
 
         fetchConsolas();
     }, [userData?.token]);
 
-
     const renderTabContent = () => {
+        if (error) {
+            return <div>Error: {error}</div>; // Mostrar mensaje de error
+        }
+
         if (consolas.length === 0) {
-            return <div>No hay consolas disponibles.</div>; // Mensaje de error si no hay consolas
+            return <div>No hay consolas disponibles.</div>; // Mensaje si no hay consolas
         }
 
         return (
@@ -46,7 +51,7 @@ export const Consolas = () => {
 
     return (
         <section className='text-white'>
-            {userData.name &&
+            {userData?.name &&
                 <div className='md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 xl:gap-16 sm:py-16 xl:px-16'>
                     <Image src='/images/consolas.jpg' alt='imagen consolas' width={500} height={500} />
                     <div>

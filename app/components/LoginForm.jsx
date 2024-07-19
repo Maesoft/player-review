@@ -6,20 +6,18 @@ import Image from 'next/image';
 import { useUser } from '../context/UserContext';
 import UserPanel from './UserPanel';
 
-
 const LoginForm = () => {
-  const { userData, setUserData } = useUser({});
+  const { userData, setUserData } = useUser();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [msgError, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/auth/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,10 +30,11 @@ const LoginForm = () => {
         setIsLoading(false);
         return setError(err.message);
       }
+
       const data = await res.json();
       localStorage.setItem('token', data.token);
       setUserData(data);
-      window.location.href='/'
+      window.location.href = '/';
     } catch (error) {
       setIsLoading(false);
       setError(error.message);
@@ -68,7 +67,7 @@ const LoginForm = () => {
     );
   }
 
-  if (!Object.keys(userData).length==0) {
+  if (userData && Object.keys(userData).length !== 0) {
     return <UserPanel />;
   }
 

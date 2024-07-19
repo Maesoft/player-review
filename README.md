@@ -14,7 +14,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io](http://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 

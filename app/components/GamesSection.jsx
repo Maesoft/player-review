@@ -12,13 +12,13 @@ export const GamesSection = () => {
     const { userData } = useUser() || {};
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [displayedGames, setDisplayedGames] = useState([]);
+    const [error, setError] = useState(null); // Estado para el error
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                let url = 'http://localhost:3000/video_games/';
+                let url = 'https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/video_games/';
                 if (tag !== 'Todos') {
                     url += `category/${tag}`;
                 }
@@ -32,9 +32,10 @@ export const GamesSection = () => {
                 }
                 const data = await response.json();
                 setGames(data);
-                setDisplayedGames(expanded ? data : data.slice(0, 6));
+                setError(null); // Reiniciar el estado de error si la solicitud tiene éxito
             } catch (error) {
                 console.error('Error al obtener los juegos:', error);
+                setError(error.message); // Actualizar el estado con el mensaje de error
                 setGames([]);
             } finally {
                 setLoading(false);
@@ -42,7 +43,7 @@ export const GamesSection = () => {
         };
 
         fetchData();
-    }, [tag, expanded, userData?.token]);
+    }, [tag, userData?.token]);
 
     const handleTagChange = (newTag) => {
         setTag(newTag);
@@ -55,12 +56,13 @@ export const GamesSection = () => {
 
     const handleToggleExpand = () => {
         setExpanded((prevExpanded) => !prevExpanded);
-        setDisplayedGames((prevGames) => (!expanded ? prevGames.slice(0, 6) : games));
     };
+
+    const displayedGames = expanded ? games : games.slice(0, 6);
 
     return (
         <>
-            {userData.name && (
+            {userData?.name && (
                 <>
                     <Category onTagChange={handleTagChange} selectedTag={tag} />
                     <h2 className='text-center text-4xl font-bold text-white mt-4 mb-8'>
@@ -71,6 +73,8 @@ export const GamesSection = () => {
                         <div className="flex items-center justify-center min-h-screen">
                             <div className="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin"></div>
                         </div>
+                    ) : error ? (
+                        <div className='text-center text-white'>Error: {error}</div>
                     ) : games.length === 0 ? (
                         <div className='text-center text-white'>No hay juegos disponibles en esta categoría.</div>
                     ) : (
@@ -100,7 +104,7 @@ export const GamesSection = () => {
                         />
                     )}
 
-                    {userData?.name && games.length > 6 && !loading && (
+                    {games.length > 6 && !loading && (
                         <div className='flex justify-center mt-10'>
                             <button
                                 className='px-6 py-3 w-full sm:w-fit rounded-full mr-4 bg-gradient-to-br from-blue-500 via-purple-500 to-orange-300 border hover:border-pink-700 text-white'

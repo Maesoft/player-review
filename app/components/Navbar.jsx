@@ -19,10 +19,6 @@ const navlinks = [
     {
         title: 'Categorias y Juegos',
         path: '#games-section'
-    },
-    {
-        title: 'Mi Cuenta',
-        path: '/login'
     }
 ];
 
@@ -53,27 +49,42 @@ export const Navbar = () => {
                 </Link>
                 <div className='mobile-menu block md:hidden'>
                     {!navbarOpen ? (
-                        <button onClick={() => setNavbarOpen(true)} className='flex item-center px-3 py-2 border rounded border-slate-200 hover:text-white hover:border-white text-slate-200 '>
+                        <button onClick={() => setNavbarOpen(true)} className='flex items-center px-3 py-2 border rounded border-slate-200 hover:text-white hover:border-white text-slate-200'>
                             <Bars3Icon className='h-5 w-5' />
                         </button>
                     ) : (
-                        <button onClick={() => setNavbarOpen(false)} className='flex item-center px-3 py-2 border rounded border-slate-200 hover:text-white hover:border-white text-slate-200 '>
+                        <button onClick={() => setNavbarOpen(false)} className='flex items-center px-3 py-2 border rounded border-slate-200 hover:text-white hover:border-white text-slate-200'>
                             <XMarkIcon className='h-5 w-5' />
                         </button>
                     )}
                 </div>
                 <div className='menu hidden md:block md:w-auto' id='navbar'>
                     <ul className='flex p-2 mb-5 md:p-0 md:flex-row md:space-x-8 mt-5'>
-                        {userData.name &&
-                            navlinks.map((link, index) => (
-                                <li key={index} onClick={() => scrollToSection(link.path)}>
-                                    <Navlink href={link.path} title={link.title} />
-                                </li>
-                            ))}
+                        {navlinks.map((link, index) => (
+                            <li key={index} onClick={() => scrollToSection(link.path)}>
+                                <Navlink href={link.path} title={link.title} />
+                            </li>
+                        ))}
+                        <li onClick={() => scrollToSection('/login')}>
+                            <Navlink href='/login' title={userData.name ? 'Mi Cuenta' : 'Iniciar Sesión'} />
+                        </li>
                     </ul>
                 </div>
             </div>
-            {navbarOpen ? <MenuOverlay links={navlinks} onClickLink={scrollToSection} /> : null}
+            {navbarOpen && (
+                <div className='block md:hidden'>
+                    <ul className='p-2'>
+                        {navlinks.map((link, index) => (
+                            <li key={index} onClick={() => scrollToSection(link.path)}>
+                                <Navlink href={link.path} title={link.title} />
+                            </li>
+                        ))}
+                        <li onClick={() => scrollToSection('/login')}>
+                            <Navlink href='/login' title={userData.name ? 'Mi Cuenta' : 'Iniciar Sesión'} />
+                        </li>
+                    </ul>
+                </div>
+            )}
         </nav>
     );
 };

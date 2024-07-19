@@ -7,7 +7,7 @@ const Category = ({ onTagChange, selectedTag }) => {
     const [categorias, setCategorias] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
-    const baseUrl = 'http://localhost:3000/category/';
+    const baseUrl = 'https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/category/';
     const { userData } = useUser() || {};
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const Category = ({ onTagChange, selectedTag }) => {
         };
 
         obtenerCategorias();
-    }, [baseUrl, userData?.token]);
+    }, [userData?.token]);
 
     const manejarClickTag = (nuevoTag) => {
         onTagChange(nuevoTag);
@@ -49,25 +49,31 @@ const Category = ({ onTagChange, selectedTag }) => {
                         Categorías
                     </h2>
                     <div className='text-white justify-center items-center grid md:grid-cols-5 gap-5 md:gap-6 p-4 mb-8'>
-                        {cargando &&
+                        {cargando && (
                             <div className="flex items-center justify-center min-h-screen">
                                 <div className="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin"></div>
-                            </div>}
+                            </div>
+                        )}
+                        {!cargando && error && <div>Error: {error}</div>}
                         {!cargando && !error && categorias.length === 0 && <div>No hay categorías disponibles</div>}
-                        <GamesTags
-                            key="todos"
-                            onClick={() => manejarClickTag('Todos')}
-                            name="Todos"
-                            isSelected={selectedTag === 'Todos'}
-                        />
-                        {categorias.map(categoria => (
-                            <GamesTags
-                                key={categoria.id}
-                                onClick={() => manejarClickTag(categoria.name)}
-                                name={categoria.name}
-                                isSelected={selectedTag === categoria.name}
-                            />
-                        ))}
+                        {!cargando && !error && (
+                            <>
+                                <GamesTags
+                                    key="todos"
+                                    onClick={() => manejarClickTag('Todos')}
+                                    name="Todos"
+                                    isSelected={selectedTag === 'Todos'}
+                                />
+                                {categorias.map(categoria => (
+                                    <GamesTags
+                                        key={categoria.id}
+                                        onClick={() => manejarClickTag(categoria.name)}
+                                        name={categoria.name}
+                                        isSelected={selectedTag === categoria.name}
+                                    />
+                                ))}
+                            </>
+                        )}
                     </div>
                 </>
             }

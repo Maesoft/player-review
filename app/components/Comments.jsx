@@ -10,14 +10,18 @@ const Comments = ({ gameId }) => {
 
     useEffect(() => {
         const fetchComments = async () => {
+            if (!userData?.token) return; // Asegúrate de que userData y token estén definidos
+
             try {
-                const res = await fetch(`http://localhost:3000/comments/games/${gameId}`, {
+                const res = await fetch(`http://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/comments/games/${gameId}`, {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${userData.token}` },
                 });
                 if (res.ok) {
                     const data = await res.json();
                     setComments(data);
+                } else {
+                    setComments([]);
                 }
             } catch (error) {
                 console.error("Error al cargar los comentarios:", error);
@@ -26,30 +30,32 @@ const Comments = ({ gameId }) => {
         };
 
         fetchComments();
-    }, [gameId, userData.token]);
+    }, [gameId, userData?.token]);
 
     const handlePostComment = async () => {
-        if (newComment.trim()) {
-            const commentWithUserInfo = `${userData.name} - ${new Date().toLocaleString()}: ${newComment}`;
-            const newCommentObject = { comment: commentWithUserInfo, userId: userData.id, videoGameId: gameId };
-            setComments([...comments, newCommentObject]);
-            setNewComment("");
-            try {
-                const res = await fetch(`http://localhost:3000/comments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${userData.token}`
-                    },
-                    body: JSON.stringify(newCommentObject),
-                });
-                if (!res.ok) {
-                    const err = await res.json();
-                    return setError(err.message);
-                }
-            } catch (error) {
-                setError(error.message);
+        if (!newComment.trim() || !userData?.token) return;
+
+        const commentWithUserInfo = `${userData.name} - ${new Date().toLocaleString()}: ${newComment}`;
+        const newCommentObject = { comment: commentWithUserInfo, userId: userData.id, videoGameId: gameId };
+        setComments([...comments, newCommentObject]);
+        setNewComment("");
+
+        try {
+            const res = await fetch(`http://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/comments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userData.token}`
+                },
+                body: JSON.stringify(newCommentObject),
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                setError(err.message);
             }
+        } catch (error) {
+            setError(error.message);
         }
     };
 
