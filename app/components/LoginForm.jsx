@@ -19,7 +19,7 @@ const LoginForm = () => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/auth/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

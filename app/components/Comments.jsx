@@ -11,7 +11,7 @@ const Comments = ({ gameId }) => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/comments/games/${gameId}`, {
+                const res = await fetch(`app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/comments/games/${gameId}`, {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${userData.token}` },
                 });
@@ -35,7 +35,7 @@ const Comments = ({ gameId }) => {
             setComments([...comments, newCommentObject]);
             setNewComment("");
             try {
-                const res = await fetch(`http://localhost:3000/comments`, {
+                const res = await fetch(`app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/comments`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

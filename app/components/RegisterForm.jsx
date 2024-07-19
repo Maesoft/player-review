@@ -17,7 +17,7 @@ const RegisterForm = () => {
         return setError('Las contraseñas no coinciden.');
       }
 
-      const res = await fetch("http://localhost:3000/auth/register", {
+      const res = await fetch("app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/auth/register", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
