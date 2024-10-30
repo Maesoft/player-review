@@ -13,7 +13,7 @@ const UserPanel = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await fetch(`https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/comments/users/${userData.id}`, {
+        const res = await fetch(`http://13.59.73.195:3000/comments/users/${userData.id}`, {
           method: 'GET',
           headers: { 'Authorization': `Bearer ${userData.token}` },
         });
@@ -38,7 +38,7 @@ const UserPanel = () => {
   const eliminarCuenta = async () => {
     const password = prompt('Introduce la contraseña');
     try {
-      const res = await fetch('https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/auth', {
+      const res = await fetch('http://13.59.73.195:3000/auth', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ const UserPanel = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await fetch('https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/auth/change-password', {
+      const res = await fetch('http://13.59.73.195:3000/auth/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

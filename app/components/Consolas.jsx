@@ -15,7 +15,7 @@ const Consolas = () => {
                 if (userData?.token) {
                     headers['Authorization'] = `Bearer ${userData.token}`;
                 }
-                const response = await fetch('https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/console', { headers });
+                const response = await fetch('http://13.59.73.195:3000/console', { headers });
                 if (!response.ok) {
                     throw new Error('Error al obtener las consolas');
                 }

@@ -7,7 +7,7 @@ const Category = ({ onTagChange, selectedTag }) => {
     const [categorias, setCategorias] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
-    const baseUrl = 'https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/category/';
+    const baseUrl = 'http://13.59.73.195:3000/category/';
     const { userData } = useUser() || {};
 
     useEffect(() => {

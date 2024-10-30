@@ -18,7 +18,7 @@ export const GamesSection = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                let url = 'https://app-7627139a-0e98-484c-b5e6-93e7f2612bf3.cleverapps.io/video_games/';
+                let url = 'http://13.59.73.195:3000/video_games/';
                 if (tag !== 'Todos') {
                     url += `category/${tag}`;
                 }
